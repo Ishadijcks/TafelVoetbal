@@ -56,6 +56,8 @@ def main():
 
     print(os.getenv("TOPIC"))
 
+    vision()
+
 
 if __name__ == '__main__':
     main()
