@@ -1,0 +1,19 @@
+[project]
+name = "tafelvoetbal"
+version = "0.0.1"
+dependencies = [
+    "requests",
+    'importlib-metadata; python_version<"3.10"',
+]
+
+[build-system]
+requires = [
+    "setuptools",
+    "numpy",
+    "python-dotenv",
+]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+
+vision = "vision.vision:main"
