@@ -15,7 +15,9 @@ class FollowXStrategy(Strategy):
     def execute(self, state: GameState, delta: float) -> list[BaseCommand]:
         # TODO convert between ball and keeper space
         ball_x, ball_y = state.ball
-        target_position = ball_x
+        clipped_ball = min(0.66, max(0.33, ball_y)) - 0.33
+
+        target_position = clipped_ball / 0.33
         return [
             TranslateCommand(StickId.ONE, target_position),
         ]
