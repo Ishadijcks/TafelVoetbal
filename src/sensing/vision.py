@@ -2,7 +2,9 @@ import cv2
 from picamera2 import Picamera2
 from libcamera import controls as cam_controls
 
+from communication.commands.commands import StickId
 from model.game_state import GameState
+from sensing.frame_analysis import frame_analysis
 from sensing.sensor import Sensor
 
 
@@ -40,6 +42,19 @@ class Vision(Sensor):
     def get_state(self, delta: float) -> GameState:
         frame = self.picam2.capture_array()
 
-        cv2.imshow('frame', frame)
+        center, radius, frame = frame_analysis(frame)
+        cv2.imshow("Wajooo", frame)
+        key = cv2.waitKey(1) & 0xFF
 
-        return GameState()
+        if not center:
+            return GameState()
+
+        return GameState(
+            sticks={
+                StickId.ONE: 0,
+                StickId.TWO: 0,
+                StickId.THREE: 0,
+                StickId.FOUR: 0,
+            },
+            ball=center
+        )
