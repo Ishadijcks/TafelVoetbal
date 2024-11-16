@@ -26,7 +26,7 @@ class SliderInputWindow(QMainWindow):
         self.translate_slider.setMaximum(self.GRANULARITY)
         self.translate_slider.setTracking(True)
         self.translate_slider.setValue(int(initial_rotation * self.GRANULARITY))
-        self.translate_slider.valueChanged.connect(self.on_rotation_changed)
+        self.translate_slider.valueChanged.connect(self.on_translation_changed)
         layout.addWidget(self.translate_slider)
 
         self.rotate_slider = QSlider(Qt.Horizontal)
@@ -34,7 +34,7 @@ class SliderInputWindow(QMainWindow):
         self.rotate_slider.setMaximum(self.GRANULARITY)
         self.rotate_slider.setTracking(True)
         self.rotate_slider.setValue(int(initial_translation * self.GRANULARITY))
-        self.rotate_slider.valueChanged.connect(self.on_translation_changed)
+        self.rotate_slider.valueChanged.connect(self.on_rotation_changed)
         layout.addWidget(self.rotate_slider)
 
         central_widget = QWidget()
