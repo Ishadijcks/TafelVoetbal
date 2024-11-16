@@ -13,10 +13,10 @@ def vision():
 
     MAX_WIDTH, MAX_HEIGHT = picam2.camera_properties['PixelArraySize']
 
-    margin_top = 0.1
-    margin_left = 0.3
-    margin_right = 0.3
-    margin_bottom = 0.1
+    margin_top = 0.0
+    margin_left = 0.0
+    margin_right = 0.0
+    margin_bottom = 0.0
 
     raw = {
         'size': (1200, 1200),
@@ -47,8 +47,8 @@ def vision():
         # TODO(@Isha): Get Qt preview working or make this configurable
         cv2.imshow('frame', frame)
 
-        # Close down the video stream
-        cv2.destroyAllWindows()
+    # Close down the video stream
+    cv2.destroyAllWindows()
 
 
 def main():
