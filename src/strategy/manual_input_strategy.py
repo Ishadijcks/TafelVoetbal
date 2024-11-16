@@ -26,8 +26,8 @@ class ManualInputStrategy(Strategy):
         self.rotate = multiprocessing.Value('f', initial_rotate)
 
         proc = multiprocessing.Process(target=self.start_ui, args=())
+        proc.daemon = True
         proc.start()
-        signal.signal(signal.SIGTERM, lambda frame, num: proc.terminate())
 
         print("showing app")
 
