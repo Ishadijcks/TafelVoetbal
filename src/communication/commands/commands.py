@@ -9,10 +9,10 @@ class CommandType(IntEnum):
 
 
 class StickId(IntEnum):
-    ONE = 0x1,
-    TWO = 0x2,
-    THREE = 0x3,
-    FOUR = 0x4
+    ONE = 0x0,
+    TWO = 0x1,
+    THREE = 0x2,
+    FOUR = 0x3
 
 
 class BaseCommand(ABC):

@@ -16,8 +16,8 @@ def main():
     # serial = SerialConnection("/dev/ttyUSB0")
     serial = MockSerial()
 
-    # strategy: Strategy = ManualInputStrategy()
-    strategy: Strategy = FollowXStrategy()
+    strategy: Strategy = ManualInputStrategy()
+    # strategy: Strategy = FollowXStrategy()
 
 
     sensor: Sensor = VideoSensor("./assets/blauw.mp4")
