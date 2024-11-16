@@ -2,16 +2,6 @@ from serial import Serial
 
 from communication.commands.commands import BaseCommand
 
-if __name__ == '__main__':
-
-    ser = Serial('/dev/ttyACM0', 9600, timeout=1)
-    ser.reset_input_buffer()
-    while True:
-        if ser.in_waiting > 0:
-            line = ser.readline().decode('utf-8').rstrip()
-            print(line)
-
-
 class SerialConnection:
     def __init__(self, port: str, baud: int = 9600):
         self.ser = Serial(port, baud, timeout=1)
@@ -24,3 +14,8 @@ class SerialConnection:
     def send_command(self, command: BaseCommand) -> None:
         serialized = command.serialize()
         self.ser.write(serialized)
+
+        if self.ser.in_waiting > 0:
+            line = self.ser.readline()
+
+            print("expected", serialized.hex(), "received", line.hex())
