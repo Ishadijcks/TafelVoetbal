@@ -4,6 +4,7 @@ from communication.mock_serial import MockSerial
 from sensing.mock_sensor import MockSensor
 from sensing.sensor import Sensor
 from sensing.video_sensor import VideoSensor
+from sensing.vision import Vision
 from strategy.follow_x_strategy import FollowXStrategy
 from strategy.manual_input_strategy import ManualInputStrategy
 from strategy.ping_pong_strategy import PingPongStrategy
@@ -22,7 +23,7 @@ def main():
 
     # sensor: Sensor = VideoSensor("./assets/blauw.mp4")
     # sensor: Sensor = MockSensor(5)
-    sender: Sensor = Vision
+    sensor: Sensor = Vision()
 
     while True:
         # Time calculations
