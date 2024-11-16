@@ -17,16 +17,21 @@ class StickId(IntEnum):
 
 class BaseCommand(ABC):
 
-    def __init__(self, type: CommandType, stick: StickId, data: bytes):
+    def __init__(self, type: CommandType, stick: StickId, data: int):
         self.type = type
         self.stick = stick
         self.data = data
 
-        if len(data) != 2:
-            raise ValueError(f"Invalid data length, must be 2 bytes, is '{len(data)}'")
+        if data < 0 or data > 255:
+            raise ValueError("Invalid data value", data)
 
     def serialize(self) -> bytes:
-        return self.type.value.to_bytes(1, byteorder='big') + self.stick.value.to_bytes(1, byteorder='big') + self.data
+        # 0xFF is used as the start byte
+        self.data = min(254, self.data)
+        return 0xFF.to_bytes(1, byteorder='big') + \
+            self.type.value.to_bytes(1, byteorder='big') + \
+            self.stick.value.to_bytes(1, byteorder='big') + \
+            self.data.to_bytes(1, byteorder='big')
 
     def __repr__(self):
-        return f"{self.__class__.__name__}(type={self.type}, stick={self.stick}, data={self.data.hex()})"
+        return f"{self.__class__.__name__}(type={self.type}, stick={self.stick}, data={hex(self.data)})"

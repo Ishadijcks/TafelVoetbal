@@ -32,7 +32,6 @@ class ManualInputStrategy(Strategy):
         print("showing app")
 
     def start_ui(self):
-        global window
         app = QApplication(sys.argv)
         window = SliderInputWindow(
             self.translate.value,
