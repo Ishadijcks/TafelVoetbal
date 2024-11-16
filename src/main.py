@@ -3,6 +3,7 @@ import time
 from communication.mock_serial import MockSerial
 from sensing.mock_sensor import MockSensor
 from sensing.sensor import Sensor
+from strategy.manual_input_strategy import ManualInputStrategy
 from strategy.ping_pong_strategy import PingPongStrategy
 from strategy.strategy import Strategy
 
@@ -10,10 +11,11 @@ from strategy.strategy import Strategy
 def main():
     last_time = time.time()
 
-    strategy: Strategy = PingPongStrategy(10)
-
     # serial = SerialConnection("/dev/ttyUSB0")
     serial = MockSerial()
+
+    strategy: Strategy = ManualInputStrategy()
+
 
     # sensing: Vision = Vision()
     sensor: Sensor = MockSensor(5)
