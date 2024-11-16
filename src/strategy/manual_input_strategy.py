@@ -1,4 +1,5 @@
 import multiprocessing
+import signal
 import sys
 
 from PyQt5.QtWidgets import QApplication
@@ -26,6 +27,7 @@ class ManualInputStrategy(Strategy):
 
         proc = multiprocessing.Process(target=self.start_ui, args=())
         proc.start()
+        signal.signal(signal.SIGTERM, lambda frame, num: proc.terminate())
 
         print("showing app")
 
