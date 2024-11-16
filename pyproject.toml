@@ -16,4 +16,4 @@ build-backend = "setuptools.build_meta"
 
 [project.scripts]
 
-tafelvoetbal = "main"
+tafelvoetbal = "main:main"
