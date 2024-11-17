@@ -7,9 +7,9 @@ from communication.serial_connection import SerialConnection
 
 
 def main(
-        port: Annotated[str, typer.Argument()] = "/dev/tty0",
-        type: Annotated[int, typer.Argument()] = CommandType.ROTATE,
-        stick_id: Annotated[int, typer.Argument()] = StickId.ONE,
+        port: Annotated[str, typer.Option()] = "/dev/ttyACM0",
+        type: Annotated[int, typer.Option()] = CommandType.ROTATE,
+        stick_id: Annotated[int, typer.Option()] = StickId.ONE,
         data: Annotated[int, typer.Argument()] = 0x00,
 ):
     serial = SerialConnection(port=port)
