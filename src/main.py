@@ -10,7 +10,7 @@ from sensing.mock_sensor import MockSensor
 from sensing.sensor import Sensor
 from sensing.video_sensor import VideoSensor
 from sensing.picamera import PiCamera
-from strategy.follow_x_strategy import FollowXStrategy
+from strategy.follow_strategy import FollowStrategy
 from strategy.manual_input_strategy import ManualInputStrategy
 from strategy.ping_pong_strategy import PingPongStrategy
 from strategy.strategy import Strategy
@@ -24,7 +24,7 @@ class SerialType(str, Enum):
 
 class StrategyType(str, Enum):
     manual = "manual"
-    followX = "followx"
+    follow = "follow"
     pingpong = "pingpong"
 
 
@@ -54,7 +54,7 @@ serialports: Dict[SerialType, str] = {
 
 strategies: Dict[StrategyType, type[Strategy]] = {
     StrategyType.manual: ManualInputStrategy,
-    StrategyType.followX: FollowXStrategy,
+    StrategyType.follow: FollowStrategy,
     StrategyType.pingpong: PingPongStrategy,
 }
 
