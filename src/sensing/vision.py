@@ -46,7 +46,7 @@ class Vision(Sensor):
         print(self.picam2.camera_configuration())
         self.picam2.start()
 
-        self.calculate_corners()
+        # self.calculate_corners()
 
     def calculate_corners(self) -> None:
         frame = self.picam2.capture_array()
