@@ -21,9 +21,9 @@ def main():
     # strategy: Strategy = FollowXStrategy()
 
 
-    sensor: Sensor = VideoSensor("./assets/blauw.mp4")
+    # sensor: Sensor = VideoSensor("./assets/blauw.mp4")
     # sensor: Sensor = MockSensor(5)
-    # sensor: Sensor = Vision()
+    sensor: Sensor = Vision()
 
     while True:
         # Time calculations

@@ -1,16 +1,22 @@
+import time
+
 import cv2
 from picamera2 import Picamera2
 from libcamera import controls as cam_controls
 
 from communication.commands.commands import StickId
 from model.game_state import GameState
+from sensing.aruco import fetch_aruco_markers
 from sensing.frame_analysis import frame_analysis
 from sensing.sensor import Sensor
 
 
 class Vision(Sensor):
+
     def __init__(self):
+        self.corner = (None, None, None, None)
         self.picam2 = Picamera2()
+
         main = {
             'size': (500, 500),
         }
@@ -38,6 +44,17 @@ class Vision(Sensor):
         self.picam2.configure(config)
         print(self.picam2.camera_configuration())
         self.picam2.start()
+
+        self.calculate_corners()
+
+    def calculate_corners(self) -> None:
+        frame = self.picam2.capture_array()
+
+        corners, frame = fetch_aruco_markers(frame)
+        cv2.imshow("Corners", frame)
+        key = cv2.waitKey(1) & 0xFF
+        time.sleep(10)
+        cv2.destroyAllWindows()
 
     def get_state(self, delta: float) -> GameState:
         frame = self.picam2.capture_array()
