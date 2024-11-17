@@ -1,3 +1,5 @@
+import time
+
 from serial import Serial
 
 from communication.commands.commands import BaseCommand
@@ -6,6 +8,7 @@ class SerialConnection:
     def __init__(self, port: str, baud: int = 9600):
         self.ser = Serial(port, baud, timeout=1)
         self.ser.reset_input_buffer()
+        time.sleep(1)
         print(f"Serial port opened on port {port}")
 
     def send_commands(self, commands: list[BaseCommand]) -> None:
