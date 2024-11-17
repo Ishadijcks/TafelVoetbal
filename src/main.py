@@ -4,6 +4,7 @@ from typing import Dict
 
 import typer
 
+from communication.commands.calibrate_command import CalibrateCommand
 from communication.mock_serial import MockSerial
 from communication.serial_connection import SerialConnection
 from sensing.mock_sensor import MockSensor
@@ -77,6 +78,8 @@ def main(
         strategy: Strategy = strategies[strategy](duration=pingpong_duration)
     else:
         strategy: Strategy = strategies[strategy]()
+
+    serial.send_command(CalibrateCommand())
 
     last_time = time.time()
     previous_state = sensor.get_state(0)

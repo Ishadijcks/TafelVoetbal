@@ -6,5 +6,5 @@ class RotateCommand(BaseCommand):
         if fraction < 0 or fraction > 1:
             raise ValueError(f"Fractions must be between 0 and 1, was '{fraction}'")
 
-        data = int(fraction * ((1 << 8) - 1))
+        data = int(fraction * 100)
         super().__init__(CommandType.ROTATE, stick, data)
