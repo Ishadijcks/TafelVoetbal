@@ -1,5 +1,4 @@
 import multiprocessing
-import signal
 import sys
 
 from PyQt5.QtWidgets import QApplication

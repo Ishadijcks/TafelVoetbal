@@ -1,29 +1,84 @@
 import time
+from enum import Enum
+from typing import Dict
+
+import typer
 
 from communication.mock_serial import MockSerial
+from communication.serial_connection import SerialConnection
 from sensing.mock_sensor import MockSensor
 from sensing.sensor import Sensor
 from sensing.video_sensor import VideoSensor
-from sensing.vision import Vision
+from sensing.picamera import PiCamera
 from strategy.follow_x_strategy import FollowXStrategy
 from strategy.manual_input_strategy import ManualInputStrategy
 from strategy.ping_pong_strategy import PingPongStrategy
 from strategy.strategy import Strategy
 
 
-def main():
+class SerialType(str, Enum):
+    usb0 = "usb0"
+    acm0 = "acm0"
+    mock = "mock"
+
+
+class StrategyType(str, Enum):
+    manual = "manual"
+    followX = "followx"
+    pingpong = "pingpong"
+
+
+class SensorType(str, Enum):
+    video = "video"
+    picamera = "picamera"
+    mock = "mock"
+
+
+sensors: Dict[SensorType, type[Sensor]] = {
+    SensorType.video: VideoSensor,
+    SensorType.picamera: PiCamera,
+    SensorType.mock: MockSensor,
+}
+
+serials: Dict[SerialType, type[SerialConnection]] = {
+    SerialType.acm0: SerialConnection,
+    SerialType.usb0: SerialConnection,
+    SerialType.mock: MockSerial,
+}
+
+serialports: Dict[SerialType, str] = {
+    SerialType.acm0: "/dev/ttyACM0",
+    SerialType.usb0: "/dev/ttyUSB0",
+    SerialType.mock: "",
+}
+
+strategies: Dict[StrategyType, type[Strategy]] = {
+    StrategyType.manual: ManualInputStrategy,
+    StrategyType.followX: FollowXStrategy,
+    StrategyType.pingpong: PingPongStrategy,
+}
+
+
+def main(
+        strategy: StrategyType = StrategyType.manual,
+        serial: SerialType = SerialType.acm0,
+        sensor: SensorType = SensorType.picamera,
+        pingpong_duration: int = 10,
+        video_path: str = '/'
+):
+    if sensor == SensorType.video:
+        sensor: Sensor = sensors[sensor](path=video_path)
+    else:
+        sensor: Sensor = sensors[sensor]()
+
+    serial: SerialConnection = serials[serial](port=serialports[serial])
+
+    if strategy == StrategyType.pingpong:
+        strategy: Strategy = strategies[strategy](duration=pingpong_duration)
+    else:
+        strategy: Strategy = strategies[strategy]()
+
     last_time = time.time()
-
-    # serial = SerialConnection("/dev/ttyUSB0")
-    serial = MockSerial()
-
-    strategy: Strategy = ManualInputStrategy()
-    # strategy: Strategy = FollowXStrategy()
-
-
-    # sensor: Sensor = VideoSensor("./assets/blauw.mp4")
-    # sensor: Sensor = MockSensor(5)
-    sensor: Sensor = Vision()
 
     while True:
         # Time calculations
@@ -43,5 +98,9 @@ def main():
         serial.send_commands(commands)
 
 
+def cli():
+    typer.run(main)
+
+
 if __name__ == "__main__":
-    main()
+    typer.run(main)

@@ -42,7 +42,7 @@ class SliderInputWindow(QMainWindow):
         self.setCentralWidget(central_widget)
 
     def on_button_click(self):
-        print(f"TODO implement calibrate!")
+        print("TODO implement calibrate!")
 
     def on_translation_changed(self, x: float):
         self.on_translation(x / self.GRANULARITY)

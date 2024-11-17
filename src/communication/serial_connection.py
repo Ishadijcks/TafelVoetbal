@@ -4,6 +4,7 @@ from serial import Serial
 
 from communication.commands.commands import BaseCommand
 
+
 class SerialConnection:
     def __init__(self, port: str, baud: int = 9600):
         self.ser = Serial(port, baud, timeout=1)

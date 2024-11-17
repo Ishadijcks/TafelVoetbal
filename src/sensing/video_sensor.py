@@ -1,11 +1,9 @@
 from collections import deque
 
 import cv2
-import numpy as np
 
 from communication.commands.commands import StickId
 from model.game_state import GameState
-from sensing.aruco import fetch_aruco_markers
 from sensing.frame_analysis import frame_analysis
 from sensing.sensor import Sensor
 
@@ -33,10 +31,9 @@ class VideoSensor(Sensor):
         frame = frame[200:, :, :]
 
         center, radius, frame = frame_analysis(frame)
-        frame = fetch_aruco_markers(frame)
 
         cv2.imshow("Wajooo", frame)
-        key = cv2.waitKey(1) & 0xFF
+        cv2.waitKey(1)
 
         if not center:
             return GameState()

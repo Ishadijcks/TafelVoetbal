@@ -4,7 +4,7 @@ from communication.commands.commands import BaseCommand
 
 
 class MockSerial(Serial):
-    def __init__(self):
+    def __init__(self, port=''):
         print("Mock serial started")
         pass
 

@@ -8,7 +8,12 @@ python3 -m build
 pip install --editable .
 ```
 
-## Debug the Arduion
+## Debug the Arduino
 ```bash
 arduino --help
+```
+
+## Run the thing
+```bash
+tafelvoetbal --help
 ```

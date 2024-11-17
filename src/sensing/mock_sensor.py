@@ -10,7 +10,7 @@ class MockSensor(Sensor):
     A fake sensor that sees the ball move between the posts.
     """
 
-    def __init__(self, duration):
+    def __init__(self, duration=0.4):
         super().__init__()
         self.total_time = 0.0
         self.duration = duration

@@ -22,6 +22,7 @@ def main(
     print("Sending command...", command, command.serialize())
     serial.send_command(command)
 
+
 def cli():
     typer.run(main)
 

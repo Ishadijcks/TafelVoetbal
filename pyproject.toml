@@ -11,10 +11,12 @@ requires = [
     "setuptools",
     "numpy",
     "python-dotenv",
+    "typer",
+    "pyserial",
 ]
 build-backend = "setuptools.build_meta"
 
 [project.scripts]
 
-tafelvoetbal = "main:main"
+tafelvoetbal = "main:cli"
 arduino = "communication.main:cli"
