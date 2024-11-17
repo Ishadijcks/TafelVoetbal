@@ -15,7 +15,7 @@ class PiCamera(Sensor):
         from libcamera import controls as cam_controls
 
         self.last_center = None
-        self.predictions = deque([], maxlen=10)
+        self.predictions = deque([], maxlen=20)
 
         self.picam2 = Picamera2()
 
@@ -56,8 +56,8 @@ class PiCamera(Sensor):
         if self.last_center and center:
             ball_x, ball_y = center
             prev_ball_x, prev_ball_y = self.last_center
-            prediction_x = ball_x + (ball_x - prev_ball_x) * 10
-            prediction_y = ball_y + (ball_y - prev_ball_y) * 10
+            prediction_x = ball_x + (ball_x - prev_ball_x) * 20
+            prediction_y = ball_y + (ball_y - prev_ball_y) * 20
 
             cv2.line(frame,
                      (int(ball_x*frame.shape[0]), int(ball_y*frame.shape[1])),
