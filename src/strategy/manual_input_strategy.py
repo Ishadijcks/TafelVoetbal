@@ -4,6 +4,7 @@ import sys
 from PyQt5.QtWidgets import QApplication
 
 from communication.commands.commands import BaseCommand, StickId
+from communication.commands.rotate_command import RotateCommand
 from communication.commands.translate_command import TranslateCommand
 from model.game_state import GameState
 from strategy.strategy import Strategy
@@ -51,5 +52,5 @@ class ManualInputStrategy(Strategy):
 
         return [
             TranslateCommand(StickId.ONE, self.translate.value),
-            # RotateCommand(StickId.ONE, self.rotate.value),
+            RotateCommand(StickId.ONE, self.rotate.value),
         ]
