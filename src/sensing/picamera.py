@@ -22,10 +22,10 @@ class PiCamera(Sensor):
 
         MAX_WIDTH, MAX_HEIGHT = self.picam2.camera_properties['PixelArraySize']
 
-        margin_top = 0.0
-        margin_left = 0.0
-        margin_right = 0.0
-        margin_bottom = 0.0
+        margin_top = 0.14
+        margin_left = 0.03
+        margin_right = 0.05
+        margin_bottom = 0.06
 
         raw = {
             'size': (1200, 1200),
@@ -43,28 +43,6 @@ class PiCamera(Sensor):
         self.picam2.configure(config)
         print(self.picam2.camera_configuration())
         self.picam2.start()
-
-        # self.calculate_corners()
-
-    #
-    # def calculate_corners(self) -> None:
-    #     frame = self.picam2.capture_array()
-    #
-    #     corners, frame = fetch_aruco_markers(frame)
-    #     cv2.imshow("Corners", frame)
-    #     key = cv2.waitKey(1) & 0xFF
-    #
-    #     if len(corners) != 4:
-    #         print("WARNING: Could not detect 4 aruco markers, will continue without stretching frames", len(corners),
-    #               corners)
-    #
-    #     width, height = frame.shape[:2]
-    #     H, mask = cv2.findHomography(corners, [(0, 0), (width, 0), (0, height), (width, height)])
-    #     cv2.imshow("Mapped", H)
-    #     time.sleep(10)
-    #
-    #     key = cv2.waitKey(1) & 0xFF
-    #     cv2.destroyAllWindows()
 
     def get_state(self, delta: float) -> GameState:
         frame = self.picam2.capture_array()
