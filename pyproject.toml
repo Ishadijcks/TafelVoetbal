@@ -17,3 +17,4 @@ build-backend = "setuptools.build_meta"
 [project.scripts]
 
 tafelvoetbal = "main:main"
+arduino = "communication.main:cli"
