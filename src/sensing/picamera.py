@@ -1,3 +1,5 @@
+from collections import deque
+
 import cv2
 
 from communication.commands.commands import StickId
@@ -13,6 +15,8 @@ class PiCamera(Sensor):
         from libcamera import controls as cam_controls
 
         self.last_center = None
+        self.predictions = deque([], maxlen=10)
+
         self.picam2 = Picamera2()
 
         main = {
@@ -54,10 +58,20 @@ class PiCamera(Sensor):
             prev_ball_x, prev_ball_y = self.last_center
             prediction_x = ball_x + (ball_x - prev_ball_x) * 10
             prediction_y = ball_y + (ball_y - prev_ball_y) * 10
+
             cv2.line(frame,
                      (int(ball_x*frame.shape[0]), int(ball_y*frame.shape[1])),
                      (int(prediction_x*frame.shape[0]), int(prediction_y*frame.shape[1])),
                      (255, 255, 0), 5)
+
+            self.predictions.append((prediction_x, prediction_y))
+
+            smoothed_x = sum(p[0] for p in self.predictions) / len(self.predictions)
+            smoothed_y = sum(p[1] for p in self.predictions) / len(self.predictions)
+            cv2.line(frame,
+                     (int(ball_x * frame.shape[0]), int(ball_y * frame.shape[1])),
+                     (int(smoothed_x * frame.shape[0]), int(smoothed_y * frame.shape[1])),
+                     (255, 0, 0), 5)
 
         cv2.imshow("Wajooo", frame)
         cv2.waitKey(1)
