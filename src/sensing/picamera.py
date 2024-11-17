@@ -55,8 +55,8 @@ class PiCamera(Sensor):
             prediction_x = ball_x + (ball_x - prev_ball_x)
             prediction_y = ball_y + (ball_y - prev_ball_y)
             cv2.circle(frame, (int(prediction_x*frame.shape[0]), int(prediction_y*frame.shape[1])), int(radius),
-                       (0, 255, 255), 2)
-            cv2.circle(frame, center, int(radius), (0, 0, 255), -1)
+                       (255, 255, 0), 2)
+            cv2.circle(frame, (int(prediction_x*frame.shape[0]), int(prediction_y*frame.shape[1])), int(radius), (0, 255, 0), -1)
 
         cv2.imshow("Wajooo", frame)
         cv2.waitKey(1)
