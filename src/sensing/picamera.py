@@ -12,6 +12,7 @@ class PiCamera(Sensor):
         from picamera2 import Picamera2
         from libcamera import controls as cam_controls
 
+        self.last_center = None
         self.picam2 = Picamera2()
 
         main = {
@@ -69,11 +70,23 @@ class PiCamera(Sensor):
         frame = self.picam2.capture_array()
 
         center, radius, frame = frame_analysis(frame)
+
+        if self.last_center and center:
+            ball_x, ball_y = center
+            prev_ball_x, prev_ball_y = self.last_center
+            prediction_x = ball_x + (ball_x - prev_ball_x)
+            prediction_y = ball_y + (ball_y - prev_ball_y)
+            cv2.circle(frame, (int(prediction_x*frame.shape[0]), int(prediction_y*frame.shape[1])), int(radius),
+                       (0, 255, 255), 2)
+            cv2.circle(frame, center, int(radius), (0, 0, 255), -1)
+
         cv2.imshow("Wajooo", frame)
         cv2.waitKey(1)
 
         if not center:
             return GameState()
+
+        self.last_center = center
 
         return GameState(
             sticks={

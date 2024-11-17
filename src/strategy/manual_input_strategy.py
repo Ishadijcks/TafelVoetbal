@@ -47,7 +47,7 @@ class ManualInputStrategy(Strategy):
     def on_rotate(self, value: float) -> None:
         self.rotate.value = value
 
-    def execute(self, state: GameState, delta: float) -> list[BaseCommand]:
+    def execute(self, previous_state: GameState, state: GameState, delta: float) -> list[BaseCommand]:
 
         return [
             TranslateCommand(StickId.ONE, self.translate.value),

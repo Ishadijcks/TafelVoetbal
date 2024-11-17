@@ -79,6 +79,7 @@ def main(
         strategy: Strategy = strategies[strategy]()
 
     last_time = time.time()
+    previous_state = sensor.get_state(0)
 
     while True:
         # Time calculations
@@ -89,9 +90,10 @@ def main(
         # Gather state from world
         state = sensor.get_state(delta)
 
-        # Execute strategy based on state
-        commands = strategy.execute(state, delta)
 
+        # Execute strategy based on state
+        commands = strategy.execute(previous_state, state, delta)
+        previous_state = state
         print("Tick duration", int(1000 * delta), "ms", ', '.join([str(c) for c in commands]))
 
         # Send commands

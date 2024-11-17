@@ -18,7 +18,7 @@ class PingPongStrategy(Strategy):
         self.total_time = 0.0
         self.duration = duration
 
-    def execute(self, state: GameState, delta: float) -> list[BaseCommand]:
+    def execute(self, previous_state: GameState, state: GameState, delta: float) -> list[BaseCommand]:
         self.total_time += delta
         target_position = 0.5 + 0.5 * math.sin(self.total_time * math.pi / self.duration)
         return [
