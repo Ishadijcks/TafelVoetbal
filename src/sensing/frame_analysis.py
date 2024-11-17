@@ -46,7 +46,8 @@ def frame_analysis(frame) -> ((int, int), int, any):
 
             relative_x = center[0] / frame.shape[1]
             relative_y = center[1] / frame.shape[0]
-            cv2.putText(frame, f"x: {relative_x}, y: {relative_y}", (20, 30), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 255),
+            cv2.putText(frame, f"x: {round(relative_x, 3)}, y: {round(relative_y, 3)}", (20, 30),
+                        cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 255),
                         thickness=2)
             return (relative_x, relative_y), radius, frame
     return None, 0, frame
