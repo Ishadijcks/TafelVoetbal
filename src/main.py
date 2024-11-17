@@ -5,6 +5,9 @@ from typing import Dict
 import typer
 
 from communication.commands.calibrate_command import CalibrateCommand
+from communication.commands.commands import StickId
+from communication.commands.rotate_command import RotateCommand
+from communication.commands.translate_command import TranslateCommand
 from communication.mock_serial import MockSerial
 from communication.serial_connection import SerialConnection
 from sensing.mock_sensor import MockSensor
@@ -79,7 +82,14 @@ def main(
     else:
         strategy: Strategy = strategies[strategy]()
 
-    serial.send_command(CalibrateCommand())
+    print("Calibrating...")
+    serial.send_command(CalibrateCommand(stick=StickId.ONE))
+    time.sleep(1)
+
+    print("Moving to neutral...")
+    serial.send_command(TranslateCommand(stick=StickId.ONE, fraction=0.5))
+    serial.send_command(RotateCommand(stick=StickId.ONE, fraction=0.5))
+    time.sleep(2)
 
     last_time = time.time()
     previous_state = sensor.get_state(0)
