@@ -56,13 +56,8 @@ class PiCamera(Sensor):
         if self.last_center and center:
             ball_x, ball_y = center
             prev_ball_x, prev_ball_y = self.last_center
-            prediction_x = ball_x + (ball_x - prev_ball_x) * 20
-            prediction_y = ball_y + (ball_y - prev_ball_y) * 20
-
-            cv2.line(frame,
-                     (int(ball_x*frame.shape[0]), int(ball_y*frame.shape[1])),
-                     (int(prediction_x*frame.shape[0]), int(prediction_y*frame.shape[1])),
-                     (255, 255, 0), 5)
+            prediction_x = ball_x + (ball_x - prev_ball_x) * 25
+            prediction_y = ball_y + (ball_y - prev_ball_y) * 25
 
             self.predictions.append((prediction_x, prediction_y))
 
