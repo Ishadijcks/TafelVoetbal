@@ -16,6 +16,9 @@ class SerialConnection:
         serialized = command.serialize()
         self.ser.write(serialized)
 
+        while self.ser.in_waiting:
+            print("waiting for response")
+
         if self.ser.in_waiting > 0:
             line = self.ser.read(1)
 
