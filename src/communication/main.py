@@ -19,7 +19,7 @@ def main(
         data=data,
     )
 
-    print("Sending command...", command)
+    print("Sending command...", command, command.serialize())
     serial.send_command(command)
 
 def cli():
