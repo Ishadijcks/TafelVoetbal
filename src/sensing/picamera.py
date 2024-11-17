@@ -52,11 +52,12 @@ class PiCamera(Sensor):
         if self.last_center and center:
             ball_x, ball_y = center
             prev_ball_x, prev_ball_y = self.last_center
-            prediction_x = ball_x + (ball_x - prev_ball_x)
-            prediction_y = ball_y + (ball_y - prev_ball_y)
-            cv2.circle(frame, (int(prediction_x*frame.shape[0]), int(prediction_y*frame.shape[1])), int(radius),
-                       (255, 255, 0), 2)
-            cv2.circle(frame, (int(prediction_x*frame.shape[0]), int(prediction_y*frame.shape[1])), int(radius), (0, 255, 0), -1)
+            prediction_x = ball_x + (ball_x - prev_ball_x) * 10
+            prediction_y = ball_y + (ball_y - prev_ball_y) * 10
+            cv2.line(frame,
+                     (int(ball_x*frame.shape[0]), int(ball_y*frame.shape[1])),
+                     (int(prediction_x*frame.shape[0]), int(prediction_y*frame.shape[1])),
+                     (255, 255, 0), 5)
 
         cv2.imshow("Wajooo", frame)
         cv2.waitKey(1)
