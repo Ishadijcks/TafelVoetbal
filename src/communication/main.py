@@ -13,15 +13,18 @@ def main(
         data: Annotated[int, typer.Argument()] = 0x00,
 ):
     serial = SerialConnection(port=port)
-    command = BaseCommand(
-        type=CommandType(type),
-        stick=StickId(stick_id),
-        data=data,
-    )
+    
+    while True:
+        inp = input("Enter a value\n\r")
+        
+        command = BaseCommand(
+            type=CommandType(type),
+            stick=StickId(stick_id),
+            data=int(inp),
+        )
 
-    print("Sending command...", command, command.serialize())
-    serial.send_command(command)
-
+        print("Sending command...", command, command.serialize())
+        serial.send_command(command)
 
 def cli():
     typer.run(main)

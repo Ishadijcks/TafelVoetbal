@@ -12,11 +12,12 @@
 AccelStepper stepper(AccelStepper::DRIVER, 2, 5); // Defaults to AccelStepper::FULL4WIRE (4 pins) on 2, 3, 4, 5
 
 void setup()
-{  
+{
   // Change these to suit your stepper if you want
-  stepper.setMaxSpeed(1000);
+  stepper.setMaxSpeed(3000);
+  stepper.setSpeed(3000);
   stepper.setAcceleration(100);
-  stepper.moveTo(100);
+  stepper.moveTo(200);
 
   pinMode(8, OUTPUT);
   digitalWrite(8,LOW);
