@@ -20,7 +20,7 @@ class SerialConnection:
         self.ser.write(serialized)
 
         while not self.ser.in_waiting:
-            print("waiting for response")
+            pass
 
         if self.ser.in_waiting > 0:
             line = self.ser.read(1)
