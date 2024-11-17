@@ -40,9 +40,6 @@ def fetch_aruco_markers(frame) -> ():
                         (topLeft[0], topLeft[1] - 15), cv2.FONT_HERSHEY_SIMPLEX,
                         0.5, (0, 255, 0), 2)
             print("[INFO] ArUco marker ID: {}".format(markerID))
-    if len(points) != 4:
-        raise ValueError("Could not detect 4 aruco markers, found", len(points), points)
-
     sorted(points, key=lambda p: (p[0], p[1]))
 
     return points, frame

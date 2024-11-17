@@ -19,6 +19,7 @@ class Vision(Sensor):
 
         main = {
             'size': (500, 500),
+            'format': 'RGB888',
         }
 
         MAX_WIDTH, MAX_HEIGHT = self.picam2.camera_properties['PixelArraySize']
@@ -34,7 +35,7 @@ class Vision(Sensor):
         controls = {
             'AfMode': cam_controls.AfModeEnum.Continuous,
             'FrameRate': 50,
-            'ExposureTime': 2500,
+            # 'ExposureTime': 2500,
             'ScalerCrop': (
                 int(margin_left * MAX_WIDTH), int(margin_top * MAX_HEIGHT),
                 int((1 - margin_left - margin_right) * MAX_WIDTH),
@@ -53,7 +54,17 @@ class Vision(Sensor):
         corners, frame = fetch_aruco_markers(frame)
         cv2.imshow("Corners", frame)
         key = cv2.waitKey(1) & 0xFF
+
+        if len(corners) != 4:
+            print("WARNING: Could not detect 4 aruco markers, will continue without stretching frames", len(corners),
+                  corners)
+
+        width, height = frame.shape[:2]
+        H, mask = cv2.findHomography(corners, [(0, 0), (width, 0), (0, height), (width, height)])
+        cv2.imshow("Mapped", H)
         time.sleep(10)
+
+        key = cv2.waitKey(1) & 0xFF
         cv2.destroyAllWindows()
 
     def get_state(self, delta: float) -> GameState:
