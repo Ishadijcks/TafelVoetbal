@@ -17,6 +17,6 @@ class SerialConnection:
         self.ser.write(serialized)
 
         if self.ser.in_waiting > 0:
-            line = self.ser.readline()
+            line = self.ser.read(1)
 
             print("expected", serialized.hex(), "received", line.hex())
