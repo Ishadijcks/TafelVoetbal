@@ -33,7 +33,7 @@ class VideoSensor(Sensor):
         frame = frame[200:, :, :]
 
         center, radius, frame = frame_analysis(frame)
-        fetch_aruco_markers(frame)
+        frame = fetch_aruco_markers(frame)
 
         cv2.imshow("Wajooo", frame)
         key = cv2.waitKey(1) & 0xFF
