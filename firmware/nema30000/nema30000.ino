@@ -1,8 +1,11 @@
 #include <AccelStepper.h> 
 
 #define STEPS 200
-#define NEMA_SPEED 8000
-#define NEMA_ACCELERATE 8000
+#define ROTATION_SPEED 8000
+#define ROTATION_ACCELERATE 8000
+
+#define TRANSLATION_SPEED 12000
+#define TRANSLATION_ACCELERATE 20000
 
 #define CONTROL_FREQUENCY 20
 #define SPEED_RAMP_RATE 2
@@ -11,6 +14,8 @@
 #define MSG_CALIBRATE 0x01
 #define MSG_TRANSLATE 0x02
 #define MSG_ROTATE    0x03
+#define MSG_SHOOTOUT  0x04
+
 #define MSG_START     0xFF
 #define MSG_OK        0x0A
 #define MSG_ERROR     0x0E
@@ -20,8 +25,8 @@
 
 
 // Ranges of the motors
-#define ROTATION_RANGE 255
-#define TRANSLATION_RANGE 220*4
+#define ROTATION_RANGE 200
+#define TRANSLATION_RANGE 220*8
 
 #define ROTATION_SCALE ROTATION_RANGE/200
 #define TRANSLATION_SCALE TRANSLATION_RANGE/254
@@ -35,12 +40,12 @@ AccelStepper translation(AccelStepper::DRIVER, 3, 6);   // Pin 6 connected to DI
 
 void setup() {
 
-  rotation.setMaxSpeed(NEMA_SPEED);
-  rotation.setAcceleration(NEMA_ACCELERATE);
+  rotation.setMaxSpeed(ROTATION_SPEED);
+  rotation.setAcceleration(ROTATION_ACCELERATE);
   rotation.setCurrentPosition(0);
 
-  translation.setMaxSpeed(NEMA_SPEED);
-  translation.setAcceleration(NEMA_ACCELERATE);
+  translation.setMaxSpeed(TRANSLATION_SPEED);
+  translation.setAcceleration(TRANSLATION_ACCELERATE);
   translation.setCurrentPosition(0);
 
   pinMode(8, OUTPUT);
@@ -71,7 +76,7 @@ void loop() {
     if(byte == MSG_START)
       clear_buffer();
 
-    if(byte == MSG_CALIBRATE){
+    if(byte == MSG_CALIBRATE && serial_buffer[0] == MSG_START && buffer_index == 1){
       calibrate();
       clear_buffer();
       Serial.print(MSG_OK);
@@ -103,7 +108,7 @@ void parse_buffer(){
   if(serial_buffer[1] == MSG_ROTATE){
     uint8_t arm_index = serial_buffer[2];
     
-    long position = serial_buffer[3]*ROTATION_SCALE;
+    long position = -long(serial_buffer[3])*ROTATION_SCALE;
     rotation.moveTo(position);
     
     Serial.write(MSG_OK);
@@ -113,10 +118,24 @@ void parse_buffer(){
   if(serial_buffer[1] == MSG_TRANSLATE){
     uint8_t arm_index = serial_buffer[2];
     
-    long position = serial_buffer[3]*TRANSLATION_SCALE;
+    long position = long(serial_buffer[3])*TRANSLATION_SCALE;
     translation.moveTo(position);
     
     Serial.write(MSG_OK);
+    return;
+  }
+
+  if(serial_buffer[1] == MSG_SHOOTOUT){
+    uint8_t arm_index = serial_buffer[2];
+    
+    long current_position = rotation.currentPosition();
+    rotation.move(ROTATION_RANGE*5*2);
+    Serial.write(MSG_OK);
+
+    while(rotation.distanceToGo());
+
+    rotation.setCurrentPosition(current_position);
+    
     return;
   }
 }
@@ -126,6 +145,7 @@ void calibrate(){
   while(digitalRead(ROTATION_CALIBRATION)){
     if(rotation.distanceToGo() == 0){
       rotation.move(-5);
+      //rotation.setSpeed(ROTATION_SPEED/100);
     }
     rotation.run();
   }
@@ -134,7 +154,8 @@ void calibrate(){
   
   while(digitalRead(TRANSLATION_CALIBRATION)){
     if(translation.distanceToGo() == 0){
-      translation.move(5);
+      translation.move(10);
+      //translation.setSpeed(TRANSLATION_SPEED/100);
     }
     translation.run();
   }
